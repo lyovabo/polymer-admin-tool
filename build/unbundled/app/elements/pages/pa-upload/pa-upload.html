@@ -1,0 +1,19 @@
+<html><head></head><body><dom-module id="pa-upload">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+      <div>
+     
+      <input type="file" id="files" multiple="true">
+      <button id="upload">submit</button>
+      </div>
+    <paper-toast id="toast1" duration="0" text="The file(s) was uploaded successfully">
+      <paper-button onclick="document.querySelector('#toast1').toggle()" class="yellow-button">Close</paper-button>
+    </paper-toast>
+  </template>
+  <script>!function(){"use strict";Polymer({is:"pa-upload",ready:function(){var e=this,t=firebase.storage().ref();$("body").on("click",$("#upload"),function(s){if(0!=$("#files").prop("files").length)for(var o=0;o<$("#files").prop("files").length;o++){var a,n=$("#files").prop("files")[o],i=t.child("files/"+n.name).put(n);i.on(firebase.storage.TaskEvent.STATE_CHANGED,function(t){if(console.log(t.b/t.h),a=parseInt(t.b/t.h*100),100==a)document.getElementById("files").value="",e.$$("#toast1").open(),$("#submit").text("Submit");else switch($("#submit").text(a),t.state){case firebase.storage.TaskState.PAUSED:$("#submit").text("Upload is paused");break;case firebase.storage.TaskState.RUNNING:$("#submit").text(a)}},function(e){switch(e.code){case"storage/unauthorized":console.log("storage/unauthorized");break;case"storage/canceled":console.log("storage/canceled");break;case"storage/unknown":console.log("storage/unknown")}},function(){var e=i.snapshot.downloadURL;$("#test").attr("src",e),console.log(e)})}})}})}();</script>
+</dom-module>
+</body></html>

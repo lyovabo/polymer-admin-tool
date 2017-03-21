@@ -2,7 +2,19 @@
   'use strict';
 
   var app = document.querySelector('#app');
+  app.getJson = function ( path ) {
 
+          var a = new Promise( function ( resolve, reject ) {
+          var ref = firebase.database().ref( path );
+          ref.on('value',function( data ) { 
+            resolve( data.val() )
+          },function( data ){
+              reject( data.code )
+            });
+          });
+          return a;
+        }
+  app.dbData = app.getJson();
   app.displayInstalledToast = function() {
     // Check to make sure caching is actually enabled—it won't be in the dev environment.
     if (!document.querySelector('platinum-sw-cache').disabled) {
@@ -22,14 +34,14 @@
 
   // Scroll page to top and expand header
   app.scrollPageToTop = function() {
-    document.getElementById('mainContainer').scrollTop = 0;
+    // document.getElementById('mainContainer').scrollTop = 0;
   };
 
   // Initial widgets cols number
   app.cols = '2';
 
   // Firebase location
-  app.location = 'https://polymer-admin.firebaseio.com';
+  app.location;
 
   // Sign out user
   app.signOut = function() {

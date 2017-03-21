@@ -1,32 +1,111 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+<html lang="">
 
-<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polymer Admin</title>
 
-  <head>
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>Elements Test Runner</title>
-    <meta charset="UTF-8">
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#2E3AA1">
 
-    <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
-    <script src="../../bower_components/web-component-tester/browser.js"></script>
-  </head>
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
 
-  <body>
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
 
-    <script>
-      WCT.loadSuites([]);
-    </script>
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
 
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
 
-  </body>
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
+  <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css">
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- will be replaced with elements/elements.vulcanized.html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- endreplace-->
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+<span id="browser-sync-binding"></span>
+<template is="dom-bind" id="app">
+
+  
+  <pa-login user="{{user}}"></pa-login>
+  <paper-scroll-header-panel fixed>
+
+    <paper-toolbar class="top-toolbar">
+      <h1><a data-route="dashboard" href="/" on-click="onDataRouteClick">Polymer Admin</a></h1>
+      <paper-icon-button icon="menu" class="toggle-drawer" on-click="toggleDrawer"></paper-icon-button>
+      <span class="flex"></span>
+      <!-- <paper-icon-button icon="refresh" class="refresh-icon"></paper-icon-button> -->
+      <!-- <pa-search></pa-search> -->
+      <pa-auth-data id="data" location='{{location}}' user="{{user}}" todos="{{todos}}" profile="{{profile}}"></pa-auth-data>
+    </paper-toolbar>
+
+    <paper-drawer-panel id="paperDrawerPanel">
+
+      <paper-scroll-header-panel drawer>
+
+        <pa-menu route="{{route}}" user="{{user}}"></pa-menu>
+
+      </paper-scroll-header-panel>
+
+      <paper-scroll-header-panel main>
+
+        <pa-pages route="{{route}}" user="{{user}}" profile='{{profile}}' todos="{{todos}}" on-sign-in="signIn"></pa-pages>
+
+        <pa-footer></pa-footer>
+      </paper-scroll-header-panel>
+
+    </paper-drawer-panel>
+
+  </paper-scroll-header-panel>
+
+</template>
+<script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+<firebase-app 
+  database-url="https://charlotte-eb580.firebaseio.com"
+  api-key="AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64">
+</firebase-app>
+<firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+</firebase-auth>
+<script>
+
+  var config = {
+    apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
+    authDomain: "charlotte-eb580.firebaseapp.com",
+    databaseURL: "https://charlotte-eb580.firebaseio.com",
+    storageBucket: "charlotte-eb580.appspot.com",
+    messagingSenderId: "210753226044"
+  };
+
+  firebase.initializeApp(config);
+  // this.$.signInWithPopup()
+  //   .then(function(response) { console.log( response )}).catch(function(error) {})
+</script>
+
+<!-- build:js scripts/app.js -->
+<script src="scripts/app.js"></script>
+<script src="../bower_components/leaflet/dist/leaflet-src.js"></script>
+<!-- endbuild-->
+</body>
 </html>

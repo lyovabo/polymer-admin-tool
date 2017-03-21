@@ -11,7 +11,7 @@
         color: var(--default-primary-color);
       }
 
-      a {
+      :host ::content a {
         text-decoration: none;
         color: var(--menu-link-color);
         display: -ms-flexbox;
@@ -45,86 +45,41 @@
         cursor: pointer;
         outline: none;
         white-space: nowrap;
-        width: 255px;
+        
         box-sizing: border-box;
         @apply(--layout);
         @apply(--layout-horizontal);
       }
-
       .arow-down {
         margin-right: 0;
       }
-
       paper-submenu paper-menu {
         background: var(--drawer-submenu-background);
-        padding: 0;
-        height: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
       }
 
       paper-submenu .submenu-expanded + paper-menu {
         height: auto;
-        max-height: 300px;
       }
     </style>
 
     <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-
-      <a data-route="dashboard" href="/" on-click="onDataRouteClick">
+      <paper-item data-route="components">
+      <a data-route="compontents" href="/components" on-click="onDataRouteClick">
         <iron-icon icon="dashboard"></iron-icon>
-        <span>Dashboard</span>
+        <span>Components</span>
       </a>
-
-      <a data-route="charts" href="/charts" on-click="onDataRouteClick">
-        <iron-icon icon="trending-up"></iron-icon>
-        <span>Charts</span>
-      </a>
-
-      <a data-route="form-elements" href="/form-elements" on-click="onDataRouteClick">
-        <iron-icon icon="input"></iron-icon>
-        <span>Form Elements</span>
-      </a>
-
-      <paper-submenu id="ui-elements-menu">
-        <paper-item class="menu-trigger" on-click="toggleSubmenu">
-          <iron-icon icon="hardware:laptop"></iron-icon>
-          <span class="flex">UI Elements</span>
-          <iron-icon icon="hardware:keyboard-arrow-down" class="arow-down"></iron-icon>
-        </paper-item>
-        <paper-menu class="menu-content sublist" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="typo" href="/typo" on-click="onDataRouteClick">
-            <iron-icon icon="text-format"></iron-icon>
-            <span>Typography</span>
-          </a>
-          <a data-route="buttons" href="/buttons" on-click="onDataRouteClick">
-            <iron-icon icon="arrow-forward"></iron-icon>
-            <span>Buttons</span>
-          </a>
-          <a data-route="ui-other" href="/ui-other" on-click="onDataRouteClick">
-            <iron-icon icon="favorite-border"></iron-icon>
-            <span>Other UI Elements</span>
-          </a>
+      </paper-item>
+      <paper-submenu>
+        <paper-item class="menu-trigger">Languages</paper-item>
+        <paper-menu class="menu-content" id="languages" attr-for-selected="data-route" selected="[[route]]">
         </paper-menu>
       </paper-submenu>
-
-      <a data-route="maps" href="/maps" on-click="onDataRouteClick">
-        <iron-icon icon="maps:pin-drop"></iron-icon>
-        <span>Maps</span>
-      </a>
-
-      <a data-route="tables" href="/tables" on-click="onDataRouteClick">
-        <iron-icon icon="apps"></iron-icon>
-        <span>Tables</span>
-      </a>
-
-      <a data-route="user-profile" href="/user-profile" on-click="onDataRouteClick" hide$="{{!user}}">
-        <iron-icon icon="account-box"></iron-icon>
-        <span>User Profile</span>
-      </a>
-
     </paper-menu>
+      <paper-item data-route="upload">
+      <a data-route="compontents" href="/upload" on-click="onDataRouteClick">
+        <iron-icon icon="dashboard"></iron-icon>
+        <span>Upload files</span>
+      </a>
   </template>
 
   <script>
@@ -134,24 +89,35 @@
       Polymer({
         is: 'pa-menu',
 
+        ready: function() {
+          var self = this;
+            app.dbData.then(function ( data ) {
+              app.dt = data;
+              for(var key in data['languages']) {
+                var item = document.createElement('paper-item');
+                var link = document.createElement('a');
+                link.setAttribute( 'href',''+key );
+                link.setAttribute( 'data-route', key );
+                link.setAttribute( 'on-click','onDataRouteClick');
+                var icon = document.createElement('iron-icon');
+                icon.setAttribute('icon','dashboard');
+                link.appendChild( icon );
+                var span = document.createElement('span');
+                span.append( key );
+                link.appendChild( span );
+                item.appendChild( link );
+                Polymer.dom( self.$.languages ).appendChild( item );
+              }
+            })
+        },
+
         toggleSubmenu: function(e) {
           e.target.parentNode.classList.toggle('submenu-expanded');
         },
 
-        onDataRouteClick: function() {
-          // Close drawer after menu item is selected if drawerPanel is narrow
-          var drawerPanel = document.querySelector('#paperDrawerPanel');
-          if (drawerPanel.narrow) {
-            drawerPanel.closeDrawer();
-          }
-
-          // adjust charts to widgets size
-          var charts = document.getElementsByTagName('google-chart');
-          setTimeout(function(){
-            for (var i = 0; i < charts.length; i++) {
-              charts[i].drawChart();
-            }
-          }, 0);
+        onDataRouteClick: function( e ) {
+          console.log(this.route);
+          
         }
       });
     })();

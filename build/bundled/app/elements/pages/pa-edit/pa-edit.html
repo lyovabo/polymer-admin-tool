@@ -1,0 +1,37 @@
+<html><head><link rel="import" href="../../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../../bower_components/paper-toast/paper-toast.html">
+<script>var CKEDITOR_BASEPATH="../../../../bower_components/ckeditor/";</script>
+
+
+
+</head><body><dom-module id="pa-edit">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host .primary-button {
+        background-color: #009688;
+        color: #fff;
+      }
+    </style>
+    <h3 id="path"></h3>
+    <div id="editor-wrap">
+      <textarea name="" id="editor"></textarea>
+    </div>
+    <div id="input-wrap">
+    <paper-input label="Value" always-float-label="" name="value"></paper-input>
+    </div>
+    <br>
+    <paper-button id="save" class="primary-button">Save</paper-button>
+    <paper-button id="cancel">Cancel</paper-button>
+    <paper-toast id="toast1" duration="0" text="Change was saved successfull">
+      <paper-button onclick="document.querySelector('#toast1').toggle()" class="yellow-button">Close</paper-button>
+    </paper-toast>
+    <paper-toast id="toast2" duration="0" text="There was some error, please try later">
+      <paper-button onclick="document.querySelector('#toast2').toggle()" class="yellow-button">Close</paper-button>
+    </paper-toast>
+  </template>
+  <script>!function(){"use strict";addEventListener("WebComponentsReady",function(){Polymer({is:"pa-edit",ready:function(){this.listen(this.$$("#cancel"),"tap","cancel"),console.log($("#editor")),$("#editor").ckeditor()},created:function(){},properties:{path:{type:String},key:{type:String},route:{type:Object,notify:!0,observer:"routeChange"},type:{type:Object}},routeChange:function(t){if("edit"==t&&app.params&&app.params.path&&app.params.type){this.path=app.params.path.replace(/\-/g,"/");var e;if($("#path").html(this.path),"editor"==app.params.type&&(e=$("#editor-wrap textarea"),$("#input-wrap").hide(),$("#editor-wrap").show()),"input"==app.params.type&&(e=$("#input-wrap input"),$("#editor-wrap").hide(),$("#input-wrap").show()),app.dt){var a=this.path.split("/"),p=this.getElement(a,app.dt);e.val(p),e.show()}else this.getJson(this.path).then(function(t){e.val(t),e.show()});this.listen(this.$$("#save"),"tap","save")}else"new"==t&&app.params&&app.params.path&&(this.path=app.params.path.replace(/\-/g,"/"),this.key=app.params.key,console.log(this.path,this.key),this.listen(this.$$("#save"),"tap","createNew"))},getElement:function(t,e){var a=t.shift();return t.length>0?this.getElement(t,e[a]):e[a]},cancel:function(){page.show("/")},save:function(t,e){var e,a;"editor"==app.params.type&&(a=$("#editor-wrap textarea")),"input"==app.params.type&&(a=$("#input-wrap input")),e=a.val();var p=this,i={};i[this.path]=e;var n=firebase.database().ref().update(i);n.then(function(t){p.$$("#toast1").open()},function(t){p.$$("#toast2").open()})},getJson:function(t){var e=new Promise(function(e,a){var p=firebase.database().ref(t);p.on("value",function(t){e(t.val())})});return e}})}),$(document).ready(function(){console.log($("#editor")),$("#editor").ckeditor(),CKEDITOR.config.autoParagraph=!1,CKEDITOR.config.allowedContent=!0})}();</script>
+</dom-module>
+</body></html>

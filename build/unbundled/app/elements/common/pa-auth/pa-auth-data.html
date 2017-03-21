@@ -1,0 +1,10 @@
+<html><head></head><body><dom-module id="pa-auth-data">
+  <template>
+    <firebase-auth id="charlotte" provider="google" user="{{user}}" status-known="{{statusKnown}}">
+    </firebase-auth>
+    <paper-button on-tap="signIn" hidden$="[[user]]">Sign in</paper-button>
+    <paper-button on-tap="signOut" hidden$="[[!user]]">Sign out</paper-button>
+  </template>
+  <script>!function(){"use strict";Polymer({is:"pa-auth-data",properties:{user:{type:Object,notify:!0},statusKnown:{type:Object}},signIn:function(){var n=this;this.$.charlotte.signInWithPopup().then(function(t){n.getJson().then(function(n){console.log(n)},function(n){console.log(n)})})},signOut:function(){return this.$.charlotte.signOut()},getJson:function(){var n=new Promise(function(n,t){var o=firebase.database().ref();o.on("value",function(t){n(t.val())},function(n){t(n.code)})});return n}})}();</script>
+
+</dom-module></body></html>

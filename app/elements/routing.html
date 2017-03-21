@@ -1,4 +1,4 @@
-<script src="../bower_components/page/page.js"></script>
+<script src="../../bower_components/page/page.js"></script>
 <script>
   window.addEventListener('WebComponentsReady', function() {
 
@@ -7,47 +7,41 @@
       next();
     }
 
-    page('/', scrollToTop, function() {
-      app.route = 'dashboard';
+    page('/:type', scrollToTop, function( data ) {
+      
+      app.route = data.params.type;
+      app.params = { "type" : data.params.type };
+
     });
 
-    page('/dashboard', scrollToTop, function() {
-      app.route = 'dashboard';
+    page('/', scrollToTop, function( data ) {
+      
+      app.route = 'components';
+      app.params = { "type" : 'components' };
+    });
+    page('/#!/', scrollToTop, function( data ) {
+      
+      app.route = 'components';
+      app.params = { "type" : 'components' };
     });
 
-    page('/charts', scrollToTop, function() {
-      app.route = 'charts';
+    page('/edit/:type/:path', scrollToTop, function( data ) {
+      
+      app.params = { 'type' : data.params.type,'path': data.params.path };
+      app.route = 'edit';
+    });
+    page('/new/:path/:key', scrollToTop, function( data ) {
+      
+      app.params = { 'path': data.params.path,'key': data.params.key };
+      app.route = 'new';
     });
 
-    page('/tables', scrollToTop, function() {
-      app.route = 'tables';
+    page('/upload', scrollToTop, function( data ) {
+      app.route = 'upload';
     });
 
-    page('/form-elements', scrollToTop, function() {
-      app.route = 'form-elements';
-    });
-
-    page('/typo', scrollToTop, function() {
-      app.route = 'typo';
-    });
-
-    page('/buttons', scrollToTop, function() {
-      app.route = 'buttons';
-    });
-
-    page('/ui-other', scrollToTop, function() {
-      app.route = 'ui-other';
-    });
-
-    page('/maps', scrollToTop, function() {
-      app.route = 'maps';
-    });
-
-    page('/user-profile', scrollToTop, function() {
-      app.route = 'user-profile';
-    });
-
-    page('*', scrollToTop, function() {
+    page('*', scrollToTop, function( data ) {
+      
       app.route = 'not-found';
     });
 

@@ -1,0 +1,72 @@
+<html><head><link rel="import" href="../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../../bower_components/paper-listbox/paper-listbox.html">
+<script src="../../../../bower_components/sortable/jquery-ui-sortable.js"></script>
+<script src="../../../../bower_components/page/page.js"></script>
+
+
+
+<link rel="stylesheet" href="json2html.css">
+
+
+</head><body><dom-module id="pa-tree">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host #dropdown-dialog {
+        display: flex;
+        flex-direction: column;
+      }
+      :host ::content #ourTree > ul {
+          border-left-width: 0px !important;
+      }
+      :host ::content #ourTree > a {
+        display: none;
+      }
+      :host ::content .primary-button {
+        background-color: #009688;
+        color: #fff;
+      }
+
+    </style>
+    <div id="ourTree"></div>
+    <paper-dialog id="dropdown-dialog">
+      <div>
+        <paper-dropdown-menu label="Select edit type">
+          <paper-listbox class="dropdown-content" selected="1">
+            <paper-item value="input">Input</paper-item>
+            <paper-item value="editor">HTML editor</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+      <div>
+      <paper-button dialog-confirm="" autofocus="" id="confirm" class="primary-button">Accept</paper-button>
+      <paper-button dialog-dismiss="">Cancel</paper-button>
+        
+      </div>
+    </paper-dialog>
+    <paper-dialog id="new-item-dialog">
+      <div>
+        <paper-input label="Key" name="key" id="key"></paper-input>
+        <paper-input label="Value" name="value" id="new-value"></paper-input>
+      </div>
+      <div>
+        <paper-button dialog-confirm="" autofocus="" id="create-new" class="primary-button">Accept</paper-button>
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+      </div>
+    </paper-dialog>
+    <paper-dialog id="remove-dialog">
+      <div>
+        <p>Are you sure you want to remove <span id="removeable-element"></span> element from database?!</p>
+      </div>
+      <div>
+        <paper-button dialog-confirm="" autofocus="" id="remove" class="primary-button">Accept</paper-button>
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>!function(){"use strict";Polymer({is:"pa-tree",ready:function(){},properties:{json:{type:String,value:"pa-tree",notify:!0},currentPath:{type:String},route:{type:Object,notify:!0,observer:"routeChange"}},edit:function(){var e=this.$$(".dropdown-content").selectedItem.getAttribute("value");page.show("/edit/"+e+"/"+this.currentPath.replace(/\//g,"-"))},routeChange:function(e){var t;t="components"==e||""==e?"components":"languages/"+e;var n=this;if(app.dt){n.clearTree();var r=this.getElement(t.split("/"),app.dt);console.log(r),$("#ourTree").jsonViewer(r),$(".json-dict").sortable({handle:".sort-icon",stop:function(e,t){$(e.target).children("li").each(function(e,t){var r=n.getPath($(t),[]);firebase.database().ref(r).setPriority(e)})}})}else n.getJson(t).then(function(e){n.clearTree(),$("#ourTree").jsonViewer(e),$(".json-dict").sortable({handle:".sort-icon",stop:function(e,t){$(e.target).children("li").each(function(e,t){var r=n.getPath($(t),[]);firebase.database().ref(r).setPriority(e)})}})},function(e){console.log(e)});$(document).on("click",".edit-icon",function(){n.currentPath=t+"/"+n.getPath($(this),[]),n.$$("#dropdown-dialog").open(),n.listen(n.$$("#confirm"),"tap","edit")}),$(document).on("click",".new-icon",function(e){n.newPath=n.getPath($(this),[]),n.$$("#new-item-dialog").open(),$("#create-new").on("click",function(){n.createNew(e),n.clearTree(),n.updateTree()})}),$(document).on("click",".remove-icon",function(e){n.removePath=n.getPath($(this),[]),$("#removeable-element").html('"'+n.removePath+'"'),n.$$("#remove-dialog").open(),$("#remove").on("click",function(){n.remove(e)})})},createNew:function(e){var t=this.$.key.value;if(t){var n=$("#new-value").val(),r={};r[this.$.key.value]=n,firebase.database().ref(this.newPath).update(r)}},clearTree:function(){$("#ourTree *").remove()},updateTree:function(){this.getJson().then(function(e){$("#ourTree").jsonViewer(e)})},remove:function(e){firebase.database().ref(this.removePath).remove(),$(e.target).parent().is("li")&&(1==$(e.target).parent().parent().find("li").length?$(e.target).parent().parent().parent().remove():$(e.target).parent().remove()),$(e.target).parent().parent().is("li")&&$(e.target).parent().parent().remove()},getJson:function(e){var t=new Promise(function(t,n){var r=firebase.database().ref(e);r.on("value",function(e){t(e.val())},function(e){n(e.code)})});return t},getElement:function(e,t){var n=e.shift();return e.length>0?this.getElement(e,t[n]):t[n]},getPath:function(e,t){if("ourTree"!=$(e).attr("id")){var n=$(e).attr("key");return $(e).attr("key")?(t.push(n),this.getPath($(e).parent(),t)):this.getPath($(e).parent(),t)}return t.reverse(),t.join("/")}})}();</script>
+</dom-module>
+</body></html>
