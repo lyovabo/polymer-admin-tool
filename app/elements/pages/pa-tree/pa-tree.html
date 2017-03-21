@@ -99,7 +99,7 @@
       edit : function() {
 
         var param = this.$$('.dropdown-content').selectedItem.getAttribute("value");
-        page.show( '/edit/' + param + '/'+this.currentPath.replace(/\//g, "-") )
+        page.show( '/edit/' + param + '/'+this.currentPath.replace(/\//g, "*") )
         
       },
 

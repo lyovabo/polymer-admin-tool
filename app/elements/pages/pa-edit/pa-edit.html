@@ -116,7 +116,7 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
 
           if (data == 'edit' && app.params && app.params.path && app.params.type) {
 
-            this.path = app.params.path.replace(/\-/g, "/");
+            this.path = app.params.path.replace(/\*/g, "/");
             var type;
             $('#path').html(this.path);
             if (app.params.type == 'editor') {
