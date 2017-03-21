@@ -135,20 +135,12 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
 
               var p = this.path.split('/')
               var dt = this.getElement(p, app.dt);
-              console.log(dt)
-              type.val(dt);
-              CKEDITOR.instances.editor.updateElement();
+              CKEDITOR.instances.editor.setData(dt)
               type.show();
 
             } else {
               this.getJson(this.path).then(function(data) {
-                // console.log(CKEDITOR.instances.editor);
-
-                // type.val(data);
-                console.log(data)
                 CKEDITOR.instances.editor.setData(data)
-
-                // CKEDITOR.instances.editor.updateElement();
                 type.show();
               });
             }
