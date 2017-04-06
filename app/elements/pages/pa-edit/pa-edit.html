@@ -2,6 +2,7 @@
 <link rel="import" href="../../../../bower_components/paper-toast/paper-toast.html">
 <script>
 var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
+CKEDITOR.config.autoParagraph = false;
 </script>
 <dom-module id="pa-edit">
   <template>
@@ -50,9 +51,10 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
         is: 'pa-edit',
 
         ready: function() {
-
+          
           var self = this;
           this.getUrls().then(function(data) {
+            
             self.urls = data;
           });
           $('body').on('click','#images-list li',function( e ){
@@ -60,8 +62,16 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
             $(e.target).parent().addClass('selected');
           })
           this.listen(this.$$('#cancel'), 'tap', 'cancel');
-          var editor = CKEDITOR.replace('editor');
-          editor.addCommand('abbr', new CKEDITOR.dialogCommand('abbrDialog'))
+            
+          if (CKEDITOR.instances['editor']) {
+              CKEDITOR.instances['editor'].destroy();
+          }
+          var editor = CKEDITOR.replace('editor',{
+                             autoParagraph : false,
+                             allowedContent : true,
+                             enterMode : CKEDITOR.ENTER_BR });
+              
+          editor.addCommand('abbr', new CKEDITOR.dialogCommand('abbrDialog'));
           CKEDITOR.dialog.add('abbrDialog', function(editor) {
             return {
               title: 'Abbreviation Properties',
@@ -112,8 +122,7 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
             toolbar: 'insert',
             icon: 'https://avatars1.githubusercontent.com/u/5500999?v=2&s=16'
           });
-          CKEDITOR.config.autoParagraph = false;
-          CKEDITOR.config.allowedContent = true;
+          
         },
 
 
@@ -148,8 +157,9 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
         },
         routeChange: function(data) {
 
-
+          
           if (data == 'edit' && app.params && app.params.path && app.params.type) {
+
 
             this.path = app.params.path.replace(/\*/g, "/");
             var type;
@@ -214,11 +224,14 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
           var type;
           if (app.params.type == 'editor') {
             type = $('#editor-wrap textarea');
+            value = CKEDITOR.instances.editor.getData()
+            
           }
           if (app.params.type == 'input') {
             type = $('#input-wrap input');
+            value = type.val();
           }
-          value = type.val();
+          
           var self = this;
           var updates = {};
           updates[this.path] = value;

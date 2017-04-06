@@ -15,6 +15,7 @@ var minifyHTML = require('gulp-minify-html');
 var minifyInline = require('gulp-minify-inline');
 var stripDebug = require('gulp-strip-debug');
 var uglify = require('gulp-uglify');
+var cache = require('gulp-cache');
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -222,6 +223,10 @@ gulp.task('default', ['clean'], function (cb) {
       ['minify-html', 'uglify-js'],
       cb);
 });
+gulp.task('cacheClear', function () {
+return cache.clear()
+})
+
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`

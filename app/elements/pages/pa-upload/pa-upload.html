@@ -10,7 +10,6 @@
       <button id="upload">submit</button>
     </div>
     <div id="images">
-      
     </div>
     <paper-toast id="toast1" duration="0" text="The file(s) was uploaded successfully">
       <paper-button onclick="document.querySelector('#toast1').toggle()" class="yellow-button">Close</paper-button>
@@ -49,20 +48,20 @@
         var error = function(error) {
           switch (error.code) {
             case 'storage/unauthorized':
-              console.log('storage/unauthorized')
+              
               break;
             case 'storage/canceled':
-              console.log('storage/canceled')
+              
               break;
             case 'storage/unknown':
-              console.log('storage/unknown')
+              
               break;
           }
         };
 
         var complete = function(uploadTask) {
           var downloadURL = uploadTask.snapshot.downloadURL;
-          self.writeUrlDb( downloadURL );
+          self.writeUrlDb(downloadURL);
           var img = self.createImage(downloadURL);
           $('#images').append(img);
           document.getElementById("files").value = "";
@@ -71,14 +70,14 @@
         };
         var storageRef = firebase.storage().ref(),
           uploadTask = storageRef.child('files/' + file.name).put(file);
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, success, error, function() {
-          complete( uploadTask )
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, success, error, function() {
+          complete(uploadTask)
         });
 
       },
 
       initEvent: function(eventType, item, handler) {
-        console.log(eventType, item, handler)
+        
         $('body').on(eventType, item, handler);
       },
 
@@ -89,26 +88,28 @@
             if (this.validate(file)) {
               this.upload(file);
             } else {
-              console.error('false file type');
+              
             }
           }
         } else {
-          console.error('no file')
+          
         }
       },
       getUrls: function() {
         var ref = firebase.database().ref('imagesUrl/');
-        var promise = new Promise( function ( resolve, reject ) {
-          ref.on('value',function(data){
+        var promise = new Promise(function(resolve, reject) {
+          ref.on('value', function(data) {
             resolve(data.val())
-          },function(error){
+          }, function(error) {
             reject(error.code)
           })
         })
         return promise;
       },
-      writeUrlDb: function( url ) {
-        firebase.database().ref('imagesUrl/').push({url:url})
+      writeUrlDb: function(url) {
+        firebase.database().ref('imagesUrl/').push({
+          url: url
+        })
       },
       createImage: function(src) {
         var img = document.createElement('img');
@@ -118,16 +119,16 @@
       ready: function() {
         var self = this;
         var a = this.getUrls();
-        a.then(function(data){
-          for(var index in data) {
+        a.then(function(data) {
+          for (var index in data) {
             var img = self.createImage(data[index].url);
             $('#images').append(img);
           }
 
         })
-        
-        this.initEvent('click', '#upload', function(){
-         self.getFiles() 
+
+        this.initEvent('click', '#upload', function() {
+          self.getFiles()
         });
       },
 
