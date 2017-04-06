@@ -14,6 +14,15 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
       background-color: #009688;
       color: #fff;
     }
+    :host ::content #images-list li {
+      border: 2px solid #fff;
+    }
+    :host ::content#images-list li.selected {
+      border: 1px solid green;
+    }
+    :host div[name=tab-basic] img {
+      max-width: 320px !important;
+    }
     </style>
     <h3 id="path"></h3>
     <div id="editor-wrap">
@@ -41,7 +50,15 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
         is: 'pa-edit',
 
         ready: function() {
-          console.log(app.params, app.params.path, app.params.type);
+
+          var self = this;
+          this.getUrls().then(function(data) {
+            self.urls = data;
+          });
+          $('body').on('click','#images-list li',function( e ){
+            $('#images-list .selected').removeClass('selected');
+            $(e.target).parent().addClass('selected');
+          })
           this.listen(this.$$('#cancel'), 'tap', 'cancel');
           var editor = CKEDITOR.replace('editor');
           editor.addCommand('abbr', new CKEDITOR.dialogCommand('abbrDialog'))
@@ -61,23 +78,28 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
                   children: [{
                     type: "html",
                     id: "imagesContainer",
-                    html: "asdfasdf"
+                    html: " "
                   }]
                 }]
               }],
               onLoad: function() {
+                var list = document.createElement('ul');
+                list.id = "images-list";
 
+                if (self.urls) {
+                  for (var index in self.urls) {
+                    var img = self.createImage(self.urls[index].url);
+                    list.append(img);
+                  }
+                  $('div[name=tab-basic]').append( list );
+                }
               },
+
               onOk: function() {
                 var dialog = this;
-                var abbr = editor.document.createElement('abbr');
-                abbr.setAttribute('asdf');
-                abbr.setText('textes');
 
-                var id = 'asdfasfasdf'
-                if (id)
-                  abbr.setAttribute('id', id);
-
+                var abbr = editor.document.createElement('img');
+                abbr.setAttribute('src',$('.selected img').attr('src'));
                 editor.insertElement(abbr);
               }
 
@@ -109,7 +131,20 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
           },
           type: {
             type: Object
+          },
+          urls: {
+            type: Object
           }
+        },
+        createImage: function(src) {
+          var img = document.createElement('img');
+          var li = document.createElement('li');
+
+          img.src = src;
+          li.style = "max-width: 100px; float: left;"
+          img.style = "max-width: 100px; float: left;"
+          li.append(img)
+          return li;
         },
         routeChange: function(data) {
 
@@ -147,9 +182,7 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
             this.listen(this.$$('#save'), 'tap', 'save');
           } else if (data == 'new' && app.params && app.params.path) {
             this.path = app.params.path.replace(/\-/g, "/");
-
             this.key = app.params.key;
-            console.log(this.path, this.key);
             this.listen(this.$$('#save'), 'tap', 'createNew');
           }
         },
@@ -160,7 +193,6 @@ var CKEDITOR_BASEPATH = '../../../../bower_components/ckeditor/';
           } else {
             return json[a];
           }
-
         },
         getUrls: function() {
           var ref = firebase.database().ref('imagesUrl/');

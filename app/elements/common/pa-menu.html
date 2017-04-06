@@ -69,7 +69,7 @@
         <span>Components</span>
       </a>
       </paper-item>
-      <paper-submenu>
+      <paper-submenu opened="true">
         <paper-item class="menu-trigger">Languages</paper-item>
         <paper-menu class="menu-content" id="languages" attr-for-selected="data-route" selected="[[route]]">
         </paper-menu>
@@ -116,7 +116,7 @@
         },
 
         onDataRouteClick: function( e ) {
-          console.log(this.route);
+          // console.log(this.route);
           
         }
       });

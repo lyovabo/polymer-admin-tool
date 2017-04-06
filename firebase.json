@@ -1,5 +1,5 @@
 {
-  "firebase": "charlotte",
+  "firebase": "",
   "public": "./",
   "ignore": [
     "firebase.json"
