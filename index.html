@@ -2,6 +2,9 @@
 <html lang="">
 
 <head>
+  
+
+
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,6 +48,44 @@
 
   
   <style is="custom-style" include="shared-styles"></style>
+  <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+   <script>
+  var config ={
+    apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
+    authDomain: "charlotte-eb580.firebaseapp.com",
+    databaseURL: "https://charlotte-eb580.firebaseio.com",
+    storageBucket: "charlotte-eb580.appspot.com",
+    messagingSenderId: "210753226044"
+  };
+
+
+  //  var config = {
+  //   apiKey: "AIzaSyA7FDzuc5e7II2bht_quxYVi6RhjoS61Gk",
+  //   authDomain: "charlotte-5475d.firebaseapp.com",
+  //   databaseURL: "https://charlotte-5475d.firebaseio.com",
+  //   projectId: "charlotte-5475d",
+  //   storageBucket: "charlotte-5475d.appspot.com",
+  //   messagingSenderId: "320024245309"
+  // };
+  
+  
+  // firebase.app.initializeApp(config);
+  // console.log(firebase.app().name);
+  firebase.initializeApp(config );
+// console.log(firebase.app('DEFAULT').initializeApp());
+  // this.$.signInWithPopup()
+  //   .then(function(response) { console.log( response )}).catch(function(error) {})
+</script>
+<!-- <firebase-app 
+  database-url="https://charlotte-eb580.firebaseio.com"
+  api-key="AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64"
+  databaseURL = "https://charlotte-eb580.firebaseio.com"
+  storageBucket = "charlotte-eb580.appspot.com"
+  >
+</firebase-app>
+<firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+</firebase-auth -->>
+ 
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -84,31 +125,8 @@
   </paper-scroll-header-panel>
 
 </template>
-<script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
-<firebase-app 
-  database-url="https://charlotte-eb580.firebaseio.com"
-  api-key="AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64">
-</firebase-app>
-<firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
-</firebase-auth>
-<script>
-  var config = {
-    apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
-    authDomain: "charlotte-eb580.firebaseapp.com",
-    databaseURL: "https://charlotte-eb580.firebaseio.com",
-    storageBucket: "charlotte-eb580.appspot.com",
-    messagingSenderId: "210753226044"
-  };
-
-  firebase.initializeApp(config);
-  // this.$.signInWithPopup()
-  //   .then(function(response) { console.log( response )}).catch(function(error) {})
-</script>
-
-<!-- build:js scripts/app.js -->
 
 
-<script src="./bower_components/leaflet/dist/leaflet-src.js"></script>
 
 <script src="./app/scripts/app.js"></script>
 <script src="./app/scripts/json2html.js"></script>
