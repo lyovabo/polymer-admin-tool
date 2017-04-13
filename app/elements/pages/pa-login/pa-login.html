@@ -20,20 +20,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host #wrapper {
         background-color: #fff;
         position: absolute;
-        top    : 0;
-        left   : 0;
-        bottom : 0;
-        right  : 0;
-        display: flex;
+        top     : 0;
+        left    : 0;
+        bottom  : 0;
+        right   : 0;
+        display : flex;
         justify-content: center;
         z-index: 1000;
       }
     </style>
-    <firebase-auth id="charlotte"
+    <!-- <firebase-auth id="charlotte"
                    provider="google"
                    user="{{user}}"
                    status-known="{{statusKnown}}">
-    </firebase-auth>
+    </firebase-auth> -->
     <div id="wrapper" hidden$="{{isHidden}}">
       
       <paper-button on-tap="signIn">Sign in</paper-button>
@@ -52,15 +52,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'pa-login',
 
       ready: function() {
-        var self = this;
-        firebase.auth().onAuthStateChanged(function(user) {
-          console.log( user )
-            if (user) {
-              self.isHidden = true;
-            } else {
-              self.isHidden = false;
-            }
-          });
+          var self = this;
+          
+          try {
+            firebase.app();
+          }
+          catch(e){
+            var config = {
+            apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
+            authDomain: "charlotte-eb580.firebaseapp.com",
+            databaseURL: "https://charlotte-eb580.firebaseio.com",
+            storageBucket: "charlotte-eb580.appspot.com",
+            messagingSenderId: "210753226044"
+          };
+
+
+            firebase.initializeApp(config);  
+          }
+          
+          // console.log(firebase.app())
+          firebase.auth().onAuthStateChanged(function(user) {
+            console.log( user )
+              if (user) {
+                self.isHidden = true;
+              } else {
+                self.isHidden = false;
+              }
+            });
       },
 
       properties: {
@@ -74,14 +92,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
        signIn: function() {
         var self = this;
-        this.$.charlotte.signInWithPopup().then( function( result ) {
-          self.getJson().then(function( data ) {
-            self.isHidden = true;
-          },function( error ) {
-            self.isHidden = false;
-            self.$$('#toast2').open();
-          })
-        });
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then( function( result ) {
+            self.getJson().then(function( data ) {
+              self.isHidden = true;
+            },function( error ) {
+              self.isHidden = false;
+              self.$$('#toast2').open();
+            })
+          });
     },
      getJson : function () {
 

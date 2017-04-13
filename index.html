@@ -50,7 +50,7 @@
   <style is="custom-style" include="shared-styles"></style>
   <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
    <script>
-  var config ={
+  var config = {
     apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
     authDomain: "charlotte-eb580.firebaseapp.com",
     databaseURL: "https://charlotte-eb580.firebaseio.com",
@@ -58,7 +58,7 @@
     messagingSenderId: "210753226044"
   };
 
-
+  firebase.initializeApp(config);
   //  var config = {
   //   apiKey: "AIzaSyA7FDzuc5e7II2bht_quxYVi6RhjoS61Gk",
   //   authDomain: "charlotte-5475d.firebaseapp.com",
@@ -69,12 +69,8 @@
   // };
   
   
-  // firebase.app.initializeApp(config);
-  // console.log(firebase.app().name);
-  firebase.initializeApp(config );
-// console.log(firebase.app('DEFAULT').initializeApp());
-  // this.$.signInWithPopup()
-  //   .then(function(response) { console.log( response )}).catch(function(error) {})
+
+  
 </script>
 <!-- <firebase-app 
   database-url="https://charlotte-eb580.firebaseio.com"
@@ -84,7 +80,7 @@
   >
 </firebase-app>
 <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
-</firebase-auth -->>
+</firebase-auth> -->
  
 </head>
 

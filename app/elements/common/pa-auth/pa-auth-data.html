@@ -1,10 +1,10 @@
 <dom-module id="pa-auth-data">
   <template>
-    <firebase-auth id="charlotte"
+   <!--  <firebase-auth id="charlotte"
                    provider="google"
                    user="{{user}}"
                    status-known="{{statusKnown}}">
-    </firebase-auth>
+    </firebase-auth> -->
     <paper-button on-tap="signIn" hidden$="[[user]]">Sign in</paper-button>
     <paper-button on-tap="signOut" hidden$="[[!user]]">Sign out</paper-button>
   </template>
@@ -27,7 +27,8 @@
 
         signIn: function() {
           var self = this;
-          this.$.charlotte.signInWithPopup().then( function( result ) {
+          var provider = new firebase.auth.GoogleAuthProvider();
+          firebase.auth().signInWithPopup(provider).signInWithPopup().then( function( result ) {
               
             self.getJson().then(function( data ) {
               console.log( data );
@@ -36,13 +37,11 @@
             })
             
           });
-
-          
-          // return a;
+          return a;
         },
       
         signOut: function() {
-          return this.$.charlotte.signOut();
+          return firebase.auth().signOut();
         },
        getJson : function () {
 
