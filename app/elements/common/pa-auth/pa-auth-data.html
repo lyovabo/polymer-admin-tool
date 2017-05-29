@@ -1,10 +1,5 @@
 <dom-module id="pa-auth-data">
   <template>
-   <!--  <firebase-auth id="charlotte"
-                   provider="google"
-                   user="{{user}}"
-                   status-known="{{statusKnown}}">
-    </firebase-auth> -->
     <paper-button on-tap="signIn" hidden$="[[user]]">Sign in</paper-button>
     <paper-button on-tap="signOut" hidden$="[[!user]]">Sign out</paper-button>
   </template>

@@ -4,7 +4,7 @@
 <head>
   
 
-
+  <script src="app/scripts/configs.js"></script>
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,37 +50,9 @@
   <style is="custom-style" include="shared-styles"></style>
   <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
    <script>
-  var config = {
-    apiKey: "AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64",
-    authDomain: "charlotte-eb580.firebaseapp.com",
-    databaseURL: "https://charlotte-eb580.firebaseio.com",
-    storageBucket: "charlotte-eb580.appspot.com",
-    messagingSenderId: "210753226044"
-  };
-
-  firebase.initializeApp(config);
-  //  var config = {
-  //   apiKey: "AIzaSyA7FDzuc5e7II2bht_quxYVi6RhjoS61Gk",
-  //   authDomain: "charlotte-5475d.firebaseapp.com",
-  //   databaseURL: "https://charlotte-5475d.firebaseio.com",
-  //   projectId: "charlotte-5475d",
-  //   storageBucket: "charlotte-5475d.appspot.com",
-  //   messagingSenderId: "320024245309"
-  // };
-  
-  
-
-  
+  firebase.initializeApp(window.configs);
 </script>
-<!-- <firebase-app 
-  database-url="https://charlotte-eb580.firebaseio.com"
-  api-key="AIzaSyCu153L_WHaKajrQjdlz7qFyIsxw4c2N64"
-  databaseURL = "https://charlotte-eb580.firebaseio.com"
-  storageBucket = "charlotte-eb580.appspot.com"
-  >
-</firebase-app>
-<firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
-</firebase-auth> -->
+
  
 </head>
 
